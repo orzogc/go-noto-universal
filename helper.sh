@@ -110,6 +110,7 @@ create_cjk_unihan_core() {
     local codepoints=""
 
     codepoints+="U+2500-257F,"   # Box drawing
+    codepoints+="U+2580-259F,"
     codepoints+="U+2E80-2EFF,"   # CJK radicals supplement
     codepoints+="U+2F00-2FD5,"   # Kangxi radicals
     codepoints+="U+2FF0-2FFF,"   # Ideographic description characters
@@ -119,16 +120,16 @@ create_cjk_unihan_core() {
     codepoints+="U+31A0-31BF,"   # Bopomofo extended
     codepoints+="U+31C0-31EF,"   # CJK strokes
     codepoints+="U+FE30-FE4F,"   # CJK compatibility forms, used with vertical writing
-    codepoints+="U+1100-11FF,"   # Hangul jamo
-    codepoints+="U+3130-318F,"   # Hangul compatibility jamo
+    #codepoints+="U+1100-11FF,"   # Hangul jamo
+    #codepoints+="U+3130-318F,"   # Hangul compatibility jamo
     codepoints+="U+3040-309F,"   # Hiragana
     codepoints+="U+30A0-30FF,"   # Katakana
     codepoints+="U+31F0-31FF,"   # Katakana phonetic extensions
     codepoints+="U+3200-32FF,"   # Enclosed CJK letters and months
     codepoints+="U+3300-33FF,"   # CJK Compatibility
-    codepoints+="U+A960-A97F,"   # Hangul jamo extended-A
-    codepoints+="U+AC00-D7AF,"   # Hangul syllables
-    codepoints+="U+D7B0-D7FF,"   # Hangul jamo extended-B
+    #codepoints+="U+A960-A97F,"   # Hangul jamo extended-A
+    #codepoints+="U+AC00-D7AF,"   # Hangul syllables
+    #codepoints+="U+D7B0-D7FF,"   # Hangul jamo extended-B
     codepoints+="U+F900-FAFF,"   # CJK compatibility ideographs
     codepoints+="U+FF00-FFEF,"   # Halfwidth and fullwidth forms
     codepoints+="U+1F200-1F2FF," # Enclosed ideographic supplement
@@ -144,6 +145,13 @@ create_cjk_unihan_core() {
     python3 -m zipfile -e Unihan.zip .
     grep kIICore Unihan_IRGSources.txt | cut -f1 > "$subset_codepoints"
     grep kUnihanCore2020 Unihan_DictionaryLikeData.txt | cut -f1 >> "$subset_codepoints"
+
+    # Choose U+4e00 to U+6000 to avoid cmap format 4 subtable overflow
+    # (reduce number of segments)
+    for code in $(seq 0x4e00 0x6000); do
+        printf "U+%X\n" "$code"
+    done >> "$subset_codepoints"
+
     sort --unique --output="$subset_codepoints" "$subset_codepoints"
     download_url "https://github.com/googlefonts/noto-cjk/raw/main/Sans/OTF/SimplifiedChinese/$input_font"
 
@@ -162,7 +170,10 @@ create_cjk_unihan_core() {
 
     go_build "$output_font" \
              NotoSans-Regular.ttf "$subset_ttf" NotoMusic-Regular.ttf \
-             NotoSansSymbols-Regular.ttf NotoSansSymbols2-Regular.ttf
+             NotoSansSymbols-Regular.ttf NotoSansSymbols2-Regular.ttf \
+             NotoSansMath-Regular.ttf NotoSansCanadianAboriginal-Regular.ttf \
+             NotoSansTagbanwa-Regular.ttf NotoSansThai-Regular.ttf \
+             NotoSansBatak-Regular.ttf
 }
 
 create_cjk_subset() {

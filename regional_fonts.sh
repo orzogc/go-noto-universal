@@ -13,20 +13,20 @@ source categories.sh
 # --- execution starts here ---
 mkdir -p cache/
 
-create_tibetan_subset
-drop_vertical_tables NotoSerifDogra-Regular.ttf
-drop_vertical_tables NotoSansNandinagari-Regular.ttf
-drop_vertical_tables NotoSansMongolian-Regular.ttf
-drop_vertical_tables NotoSansNushu-Regular.ttf
-drop_vertical_tables NotoSerifTangut-Regular.ttf
+#create_tibetan_subset
+#drop_vertical_tables NotoSerifDogra-Regular.ttf
+#drop_vertical_tables NotoSansNandinagari-Regular.ttf
+#drop_vertical_tables NotoSansMongolian-Regular.ttf
+#drop_vertical_tables NotoSansNushu-Regular.ttf
+#drop_vertical_tables NotoSerifTangut-Regular.ttf
 
 declare -a fonts=(
-    GoNotoAfricaMiddleEast
-    GoNotoSouthAsia
-    GoNotoAsiaHistorical
-    GoNotoSouthEastAsia
-    GoNotoEastAsia
-    GoNotoEuropeAmericas
+    #GoNotoAfricaMiddleEast
+    #GoNotoSouthAsia
+    #GoNotoAsiaHistorical
+    #GoNotoSouthEastAsia
+    #GoNotoEastAsia
+    #GoNotoEuropeAmericas
 )
 
 for font in "${fonts[@]}"; do
@@ -41,3 +41,5 @@ for font in "${fonts[@]}"; do
 done
 
 create_cjk_unihan_core
+
+#collect_font_statistics
